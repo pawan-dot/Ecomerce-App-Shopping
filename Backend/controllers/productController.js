@@ -28,7 +28,15 @@ exports.getAllProducts = catchAsyncErrors(async (req, res) => {
         .search()
         .filter()
         .pagination(resultPerPage);
-    //const product = await Product.find();
+
+
+    //pegination before add some functionality
+    // let products = await apiFeature.query;
+
+    // let filteredProductsCount = products.length;
+
+    // apiFeature.pagination(resultPerPage);
+
 
     const product = await apiFeature.query;//guery is got ApiFeatures
 
@@ -37,6 +45,8 @@ exports.getAllProducts = catchAsyncErrors(async (req, res) => {
         success: true,
         product,
         productsCount,
+        resultPerPage,
+
     });
 
 
@@ -57,7 +67,8 @@ exports.getOneProduct = catchAsyncErrors(async (req, res, next) => {
 
     res.status(200).json({
         success: true,
-        product
+        product,
+
     });
 
 })

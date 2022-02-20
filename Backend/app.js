@@ -2,8 +2,8 @@ const express = require("express");
 const app = express();
 const errormiddleware = require("./middlewares/error")
 const cookieParser = require("cookie-parser");
-// const bodyParser = require("body-parser");
-// const fileUpload = require("express-fileupload");
+const bodyParser = require("body-parser");
+const fileUpload = require("express-fileupload");
 // const path = require("path");
 
 
@@ -12,6 +12,9 @@ require("dotenv").config({ path: "backend/config/config.env" });
 
 app.use(express.json())
 app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(fileUpload());
+
 
 // Route Imports
 const product = require("./routes/productRoute");
