@@ -20,11 +20,12 @@ app.use(fileUpload());
 const product = require("./routes/productRoute");
 const user = require("./routes/userRoute");
 const order = require("./routes/orderRoute");
-// const payment = require("./routes/paymentRoute");
+const payment = require("./routes/paymentRoute");
 
 app.use('/api', product);
 app.use('/api', user);
 app.use('/api', order);
+app.use('/api', payment);
 
 //middleware for errors
 app.use(errormiddleware);

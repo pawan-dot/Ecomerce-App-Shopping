@@ -9,11 +9,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearErrors, login } from "../../actions/userAction";
 import { useAlert } from "react-alert";
 import { useNavigate } from 'react-router';
-
+import { ReactLocation, Router, useMatch } from "react-location";
 const Login = () => {
     const dispatch = useDispatch();
     const alert = useAlert();
     let navigate = useNavigate();
+    const reactLocation = new ReactLocation()
 
     const { error, loading, isAuthenticated } = useSelector(
         (state) => state.user
@@ -33,7 +34,7 @@ const Login = () => {
     };
 
 
-
+    const redirect = reactLocation.search ? reactLocation.search.split("=")[1] : "/shipping";
     useEffect(() => {
         if (error) {
             alert.error(error);
@@ -41,9 +42,9 @@ const Login = () => {
         }
 
         if (isAuthenticated) {
-            navigate("/");
+            navigate(redirect);
         }
-    }, [dispatch, error, alert, navigate, isAuthenticated]);
+    }, [dispatch, error, alert, navigate, isAuthenticated, redirect]);
 
     return (
         <>

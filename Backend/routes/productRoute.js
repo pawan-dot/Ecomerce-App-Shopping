@@ -1,14 +1,14 @@
 const express = require("express");
 const {
     getAllProducts,
+    getAdminProducts,
     createProduct,
     updateProduct,
-    deleteteProduct,
+    deleteProduct,
     getOneProduct,
     createProductReview,
     getProductReviews,
     deleteReview,
-    getAdminProducts
 } = require("../controllers/productController");
 const router = express.Router();
 const { isAuthenticatedUser, authorizeRoles } = require("../middlewares/auth");
@@ -19,7 +19,11 @@ router
 
 router.route("/products/getAll").get(getAllProducts);
 
+
 router.route("/products/getOne/:id").get(getOneProduct);
+
+//admin route
+router.route("/admin/products/getAll").get((isAuthenticatedUser, authorizeRoles("admin"), getAdminProducts));
 
 router
     .route("/admin/products/update/:id")
@@ -27,7 +31,7 @@ router
 
 router
     .route("/admin/products/delete/:id")
-    .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteteProduct);
+    .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteProduct);
 
 //revies routs
 

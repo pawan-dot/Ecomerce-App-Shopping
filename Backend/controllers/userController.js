@@ -94,11 +94,14 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
 
     await user.save({ validateBeforeSave: false });
     //create link for send mail
-    const resetPasswordUrl = `${req.protocol}://${req.get(
-        "host"
-    )}/api/user/password/reset/${resetToken}`;
+    // const resetPasswordUrl = `${req.protocol}://${req.get(
+    //     "host"
+    // )}/api/user/password/reset/${resetToken}`;
+    // const resetPasswordUrl = `${process.env.FRONTEND_URL}:/api/user/password/reset/${resetToken}`;
+    const resetPasswordUrl = `${process.env.FRONTEND_URL}/password/reset/${resetToken}`;
 
-    const message = `Your password reset token is :- \n\n ${resetPasswordUrl} \n\nIf you have not requested this email then, please ignore it.`;
+
+    const message = `Your password reset token are :- \n\n ${resetPasswordUrl} \n\nIf you have not requested this email then, please ignore it.`;
 
     try {
         await sendEmail({
@@ -195,24 +198,24 @@ exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
         email: req.body.email,
     };
 
-    // if (req.body.avatar !== "") {
-    //     const user = await User.findById(req.user.id);
+    if (req.body.avatar !== "") {
+        const user = await User.findById(req.user.id);
 
-    //     const imageId = user.avatar.public_id;
+        const imageId = user.avatar.public_id;
 
-    //     await cloudinary.v2.uploader.destroy(imageId);
+        await cloudinary.v2.uploader.destroy(imageId);
 
-    //     const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
-    //         folder: "avatars",
-    //         width: 150,
-    //         crop: "scale",
-    //     });
+        const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+            folder: "avatars",
+            width: 150,
+            crop: "scale",
+        });
 
-    //     newUserData.avatar = {
-    //         public_id: myCloud.public_id,
-    //         url: myCloud.secure_url,
-    //     };
-    // }
+        newUserData.avatar = {
+            public_id: myCloud.public_id,
+            url: myCloud.secure_url,
+        };
+    }
 
     const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
         new: true,
@@ -222,7 +225,6 @@ exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
 
     res.status(200).json({
         success: true,
-        message: "Profile updated Successfully"
     });
 });
 
